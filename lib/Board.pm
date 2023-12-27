@@ -83,7 +83,7 @@ sub _randomized_start ($self) {
 
 # given a tile number (0-59) returns a row number
 sub row_of ($tile) {
-  return int 2*$tile/15;
+  return int (1 + 2*$tile)/15;
 }
 
 sub print_id ($self) {
