@@ -85,6 +85,13 @@ sub _randomized_start ($self) {
 sub row_of ($tile) {
   return int (1 + 2*$tile)/15;
 }
+# given a tile number (0-59) returns penguin number if occupied
+sub occupant ($self, $tile) {
+  foreach my $pi (0 .. $self->penguin_count-1) {
+    return $pi if $self->penguin->[$pi] == $tile;
+  }
+  return -1; # no occupant
+}
 
 sub print_id ($self) {
   my $line7 = '  %02u'x7;
