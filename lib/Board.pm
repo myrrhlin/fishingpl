@@ -114,5 +114,34 @@ sub print ($self) {
   printf $form, @val;
 }
 
+# given a penguin number, return list of tile numbers it can move to
+sub penguin_moves ($self, $penguin) {
+  die 'no such penguin' if $penguin >= $self->penguin_count;
+  my $loc = $self->penguin->[$penguin];
+  return () if $loc < 0;
+  use integer;
+  my @moves;
+  # there are six directions a penguin _could_ move,
+  foreach my $diff (-8, -7, -1, 1, 7, 8) {
+    my $pos = $loc;
+    # two directions do not change row, the others change by 1.
+    my $rowchange = abs($diff) > 1 ? 1 : 0;
+    while (1) {
+      my $prev = $pos;
+      $pos += $diff;
+      # stop this direction if moved off board:
+      last if $pos < 0 || $pos > $self->tile->$#*;
+      last if abs(row_of($prev) - row_of($pos)) > $rowchange;
+      # stop this direction if tile sunk:
+      last if $self->tile->[$pos] < 1;
+      # stop this direction if tile is occupied:
+      last if $self->occupant($pos) >= 0;
+      # otherwise, we can move there:
+      push @moves, $pos;
+    }
+  }
+  return @moves;
+}
+
 1;
 
