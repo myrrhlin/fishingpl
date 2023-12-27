@@ -67,8 +67,7 @@ has penguin => (
     # sub { [ (-1)x (shift->penguin_count) ] },
 );
 
-sub _randomized_start {
-  my $self = shift;
+sub _randomized_start ($self) {
   my $todo = $self->penguin_count;
   my @penguins;
   while (@penguins < $todo) {
@@ -83,20 +82,17 @@ sub _randomized_start {
 }
 
 # given a tile number (0-59) returns a row number
-sub row_of {
-  my $index = shift;
-  return int 2*$index/15;
+sub row_of ($tile) {
+  return int 2*$tile/15;
 }
 
-sub print_id {
-  my $self = shift;
+sub print_id ($self) {
   my $line7 = '  %02u'x7;
   my $line8 = '%02u' . $line7;
   my $form = join '', ($line7 ."\n". $line8 ."\n") x4;
   printf $form, 0..59;
 }
-sub print {
-  my $self = shift;
+sub print ($self) {
   my $line7 = '  %2s'x7;
   my $line8 = '%2s' . $line7;
   my $form = join '', ($line7 ."\n". $line8 ."\n") x4;
